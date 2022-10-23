@@ -1,0 +1,4 @@
+name: DisableResources
+version: '${version}'
+main: net.minezero.disableresources.DisableResources
+api-version: 1.19
