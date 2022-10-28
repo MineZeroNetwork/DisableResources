@@ -2,6 +2,7 @@ package net.minezero.disableresources;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -67,23 +68,37 @@ public final class DisableResources extends JavaPlugin implements @NotNull Liste
             }
             if (args.length == 0) {
                 sender.sendMessage("/dresource add : 現在いるワールドの鉱石を破壊したとき石にします");
-                sender.sendMessage("/dresource remove : 現在いるワールドの鉱石を石にする設定を削除します");
+                sender.sendMessage("/dresource remove [worldName] : 現在いるワールドの鉱石を石にする設定を削除します");
                 sender.sendMessage("/dresource list : 登録されているワールド一覧を出します");
                 return true;
             }
             Player p = (Player)sender;
             if (args[0].equals("add")) {
+
+                String currentWorld = p.getWorld().getName();
+
+                if (worlds.contains(currentWorld)) {
+                    p.sendMessage("既に登録されたワールドです。");
+                    return false;
+                }
+
                 worlds.add(p.getLocation().getWorld().getName());
                 saveConfig();
                 sender.sendMessage("登録しました");
                 return true;
             }
             if (args[0].equals("remove")) {
-                if (!worlds.contains(p.getWorld().getName())) {
+                if (args.length != 2) {
+                    sender.sendMessage("/dresource remove [worldName] : 現在いるワールドの鉱石を石にする設定を削除します");
+                    return false;
+                }
+
+                String worldName = args[1];
+                if (!worlds.contains(worldName)) {
                     sender.sendMessage("そのワールドは登録されていません");
                     return true;
                 }
-                worlds.remove(p.getWorld().getName());
+                worlds.remove(worldName);
                 saveConfig();
                 sender.sendMessage("削除しました");
                 return true;
