@@ -2,7 +2,6 @@ package net.minezero.disableresources;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DisableResources extends JavaPlugin implements @NotNull Listener {
+public final class DisableResources extends JavaPlugin implements Listener {
     FileConfiguration config;
     List<String> worlds = new ArrayList<>();
     List<Material> ores = new ArrayList<>();
@@ -63,11 +62,10 @@ public final class DisableResources extends JavaPlugin implements @NotNull Liste
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equals("dresource")) {
-            if (!(sender instanceof Player)) {
+            if (!(sender instanceof Player p)) {
                 sender.sendMessage("This command can only be executed by Player.");
                 return false;
             }
-            Player p = (Player)sender;
 
             if (!p.isOp()) {
                 return true;
